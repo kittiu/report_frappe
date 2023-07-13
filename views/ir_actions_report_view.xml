@@ -5,8 +5,8 @@
         <field name="model">ir.actions.report</field>
         <field name="inherit_id" ref="base.act_report_xml_view" />
         <field name="arch" type="xml">
-            <page name="advanced" position="after">
-                <page name="Frappe Doctype Mapper" attrs="{'invisible': [('report_type', '!=', 'frappe')]}">
+            <page name="security" position="after">
+                <page name="data_map" string="Frappe Doctype Mapper" attrs="{'invisible': [('report_type', '!=', 'frappe')]}">
                     <group>
                         <group>
                             <field name="frappe_doctype" attrs="{'required': [('report_type', '=', 'frappe')]}"/>
@@ -18,7 +18,7 @@
                         </group>
                     </group>
                     <group string="Doctype Mapper">
-                        <field name="frappe_doctype_mapper" attrs="{'required': [('report_type', '=', 'frappe')]}"
+                        <field name="frappe_doctype_mapper" widget="ace" options="{'mode': 'python'}" attrs="{'required': [('report_type', '=', 'frappe')]}"
                             colspan="2" nolabel="1"/>
                     </group>
                 </page>

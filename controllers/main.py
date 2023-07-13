@@ -14,12 +14,12 @@ from odoo.http import (
 from odoo.tools import html_escape
 from odoo.tools.safe_eval import safe_eval, time
 
-from odoo.addons.web.controllers import report
+from odoo.addons.web.controllers import main
 
 _logger = logging.getLogger(__name__)
 
 
-class ReportController(report.ReportController):
+class ReportController(main.ReportController):
     @route()
     def report_routes(self, reportname, docids=None, converter=None, **data):
         if converter == "frappe":
@@ -37,9 +37,7 @@ class ReportController(report.ReportController):
                 if data["context"].get("lang"):
                     del data["context"]["lang"]
                 context.update(data["context"])
-            frappe = report.with_context(**context)._render_frappe(
-                reportname, docids, data=data
-            )[0]
+            frappe = report.with_context(**context)._render_frappe(docids, data=data)[0]
             httpheaders = [
                 ("Content-Type", "application/pdf"),
                 ("Content-Length", len(frappe)),

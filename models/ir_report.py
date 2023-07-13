@@ -23,7 +23,7 @@ class ReportAction(models.Model):
     )
 
     @api.model
-    def _render_frappe(self, report_ref, docids, data):
+    def _render_frappe(self, docids, data):
         # Get authorization token
         auth_token = self.env["ir.config_parameter"].sudo().get_param("frappe.auth.token")
         server_url = self.env["ir.config_parameter"].sudo().get_param("frappe.server.url")
@@ -34,7 +34,7 @@ class ReportAction(models.Model):
             )
         headers = {"Authorization": "token %s" % auth_token}
         # Get report action
-        report_sudo = self._get_report(report_ref)
+        report_sudo = self
         # Prepare print URL, based on print format type
         designer, method, printformat, letterhead = self._prepare_print_params(docids, report_sudo, server_url, headers)
         frappe_docs = self._create_frappe_docs(docids, report_sudo, server_url, headers)
