@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_push_sales_order_to_frappe" model="ir.actions.server">
+        <field name="name">Send SO to Frappe Server</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+target_doctype = 'Sales Order'
+target_docs = [{
+  'custom_odoo_ref': doc.name,
+  'customer': doc.partner_id.name,
+  'date': doc.date_order.strftime('%Y-%m-%d'),
+  'delivery_date': doc.commitment_date and doc.commitment_date.strftime('%Y-%m-%d') or doc.date_order.strftime('%Y-%m-%d'),
+  'items': [
+    {
+      'item_code': l.product_id.default_code,
+      'item_name': l.product_id.name,
+      'description': l.name,
+      'qty': l.product_uom_qty,
+      'rate': l.price_unit,
+    } for l in doc.order_line
+  ]
+} for doc in records]
+
+
+action = env['push.to.frappe'].push(target_doctype, target_docs)
+        </field>
+    </record>
+</odoo>

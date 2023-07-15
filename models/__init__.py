@@ -1,1 +1,1 @@
-from . import ir_report
+from . import push_to_frappe
